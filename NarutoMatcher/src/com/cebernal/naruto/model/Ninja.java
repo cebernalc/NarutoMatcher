@@ -26,7 +26,7 @@ public class Ninja {
 	private Skill skill1;
 	private Skill skill2;
 	private Skill skill3;
-	private Skill summon;
+	private Skill summon = null;
 
 	/**
 	 * @return the name

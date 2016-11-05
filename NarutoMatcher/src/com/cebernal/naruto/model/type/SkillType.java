@@ -14,18 +14,18 @@ package com.cebernal.naruto.model.type;
  */
 public enum SkillType {
 
-    PASSIVE, MYSTERY, STANDARD, CHASE;
+	PASSIVE, MYSTERY, STANDARD, CHASE, SKILL1, SKILL2, SKILL3;
 
-    public static SkillType getType(String sElement) {
-        if (sElement.equalsIgnoreCase("Normal Attack")) {
-            return SkillType.STANDARD;
-        } else if (sElement.equalsIgnoreCase("Mystery")) {
-            return SkillType.MYSTERY;
-        } else if (sElement.equalsIgnoreCase("Passive")) {
-            return SkillType.PASSIVE;
-        } else if (sElement.equalsIgnoreCase("Chase to attack")) {
-            return SkillType.CHASE;
-        }
-        return null;
-    }
+	public static SkillType getType(String sElement) {
+		if (sElement.equalsIgnoreCase("Normal Attack")) {
+			return SkillType.STANDARD;
+		} else if (sElement.equalsIgnoreCase("Mystery")) {
+			return SkillType.MYSTERY;
+		} else if (sElement.equalsIgnoreCase("Passive")) {
+			return SkillType.PASSIVE;
+		} else if (sElement.equalsIgnoreCase("Chase to attack")) {
+			return SkillType.CHASE;
+		}
+		return null;
+	}
 }

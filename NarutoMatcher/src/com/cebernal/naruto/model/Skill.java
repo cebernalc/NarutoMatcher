@@ -7,6 +7,7 @@
 package com.cebernal.naruto.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.cebernal.naruto.model.type.DamageType;
@@ -26,16 +27,16 @@ public class Skill {
 	private String idSkill;
 	private String titleSkill;
 	private String descriptionSkill;
-	private List<StatusType> chaseSkills;
-	private List<StatusType> hurtSkills;
-	private List<DebuffType> debuffs;
+	private List<StatusType> chaseSkills = Arrays.asList(StatusType.NONE);
+	private List<StatusType> hurtSkills = Arrays.asList(StatusType.NONE);
+	private List<DebuffType> debuffs = Arrays.asList(DebuffType.NONE);
 	private String chakraSkill;
 	private String coolingTime;
 	private String battlefieldCooldown;
 	private String characterSkill;
 	private String nameCharacter;
-	private int repetitions;
-	private SkillType skillType;
+	private int repetitions = 1;
+	private SkillType skillType = SkillType.PASSIVE;
 	private List<DamageType> damageTypes = new ArrayList<DamageType>();
 	private List<ElementType> damageElementTypes = new ArrayList<ElementType>();
 
