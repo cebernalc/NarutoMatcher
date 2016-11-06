@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.jws.soap.SOAPBinding.Style;
+
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
 import com.cebernal.naruto.model.type.SkillType;
 import com.cebernal.naruto.model.type.StatusType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import javafx.util.Pair;
 
 /**
  * {Insert class description here}
@@ -26,101 +30,6 @@ import com.google.gson.GsonBuilder;
 public class SimulatorHelper {
 
 	public static void main(String[] args) {
-		// Test
-		// Main
-		Ninja breezeDancer = new Ninja();
-		Skill summon = new Skill();
-		summon.setChaseSkills(Arrays.asList(StatusType.LOW_FLOAT));
-		summon.setHurtSkills(Arrays.asList(StatusType.REPULSED));
-		summon.setSkillType(SkillType.CHASE);
-
-		Skill mistery = new Skill();
-		mistery.setHurtSkills(Arrays.asList(StatusType.REPULSED));
-		mistery.setSkillType(SkillType.MYSTERY);
-		Skill standardAttack = new Skill();
-		standardAttack.setHurtSkills(Arrays.asList(StatusType.REPULSED));
-		standardAttack.setSkillType(SkillType.STANDARD);
-		Skill skill1 = new Skill();
-		skill1.setSkillType(SkillType.CHASE);
-		skill1.setChaseSkills(Arrays.asList(StatusType.REPULSED));
-		skill1.setHurtSkills(Arrays.asList(StatusType.KNOCKDOWN));
-		Skill skill2 = new Skill();
-		Skill skill3 = new Skill();
-
-		breezeDancer.setMistery(mistery);
-		breezeDancer.setStandardAttack(standardAttack);
-		breezeDancer.setSkill1(skill1);
-		breezeDancer.setSkill2(skill2);
-		breezeDancer.setSkill3(skill3);
-		breezeDancer.setSummon(summon);
-		breezeDancer.setName("Breeze Dancer");
-
-		// Naruto
-		Ninja naruto = new Ninja();
-
-		mistery = new Skill();
-		mistery.setHurtSkills(Arrays.asList(StatusType.REPULSED));
-		mistery.setSkillType(SkillType.MYSTERY);
-		standardAttack = new Skill();
-		standardAttack.setSkillType(SkillType.STANDARD);
-		skill1 = new Skill();
-		skill2 = new Skill();
-		skill2.setHurtSkills(Arrays.asList(StatusType.LOW_FLOAT));
-		skill3 = new Skill();
-
-		naruto.setMistery(mistery);
-		naruto.setStandardAttack(standardAttack);
-		naruto.setSkill1(skill1);
-		naruto.setSkill2(skill2);
-		naruto.setSkill3(skill3);
-		naruto.setName("Naruto");
-
-		// Gaara
-		Ninja gaara = new Ninja();
-
-		mistery = new Skill();
-		mistery.setHurtSkills(Arrays.asList(StatusType.KNOCKDOWN));
-		mistery.setSkillType(SkillType.MYSTERY);
-		standardAttack = new Skill();
-		standardAttack.setHurtSkills(Arrays.asList(StatusType.HIGH_FLOAT));
-		standardAttack.setSkillType(SkillType.STANDARD);
-		skill1 = new Skill();
-		skill2 = new Skill();
-		skill2.setHurtSkills(Arrays.asList(StatusType.LOW_FLOAT));
-		skill3 = new Skill();
-		skill3.setChaseSkills(Arrays.asList(StatusType.HIGH_FLOAT));
-		skill3.setHurtSkills(Arrays.asList(StatusType.KNOCKDOWN));
-		skill3.setSkillType(SkillType.CHASE);
-
-		gaara.setMistery(mistery);
-		gaara.setStandardAttack(standardAttack);
-		gaara.setSkill1(skill1);
-		gaara.setSkill2(skill2);
-		gaara.setSkill3(skill3);
-		gaara.setName("Gaara");
-
-		// Kabuto
-		Ninja kabuto = new Ninja();
-
-		mistery = new Skill();
-		standardAttack = new Skill();
-		skill1 = new Skill();
-		skill1.setChaseSkills(Arrays.asList(StatusType.KNOCKDOWN));
-		skill1.setHurtSkills(Arrays.asList(StatusType.HIGH_FLOAT));
-		skill1.setSkillType(SkillType.CHASE);
-		skill2 = new Skill();
-		skill3 = new Skill();
-
-		kabuto.setMistery(mistery);
-		kabuto.setStandardAttack(standardAttack);
-		kabuto.setSkill1(skill1);
-		kabuto.setSkill2(skill2);
-		kabuto.setSkill3(skill3);
-		kabuto.setName("Kabuto");
-
-		Ninja[] team = { gaara, naruto, breezeDancer, kabuto };
-
-		simulateTeam(team);
 
 	}
 
@@ -128,8 +37,9 @@ public class SimulatorHelper {
 	 * 
 	 * @param team
 	 *            Receives a formation of 4 ninjas
+	 * @param trigger
 	 */
-	public static void simulateTeam(Ninja[] team) {
+	public static void simulateTeam(Ninja[] team, StatusType trigger) {
 		// Ninja first = team[0];
 		// Ninja second = team[1];
 		// Ninja third = team[2];
@@ -174,19 +84,113 @@ public class SimulatorHelper {
 				availableSkills[i].add(chase);
 			}
 		}
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String prettyJson = gson.toJson(availableSkills);
-		System.out.println(prettyJson);
+		// Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		// String prettyJson = gson.toJson(availableSkills);
+		// System.out.println(prettyJson);
 		// System.out.println(Arrays.toString(availableSkills));
 
-		StatusType trigger = StatusType.REPULSED;
-
-		boolean isCombo = false;
+		boolean isCombo;
+		boolean isHighCombo = false;
+		System.out.println(trigger);
 		do {
-			// TODO: finish the alg.
+			isCombo = false;
+			// TODO: finish the algorithm
+			for (ArrayList<Skill> ninja : availableSkills) {
+				ArrayList<Integer> remove = new ArrayList<Integer>();
+				for (int i = 0; i < ninja.size(); i++) {
+					Skill chase = ninja.get(i);
+					if (chase.getChaseSkills().contains(trigger)) {
+						StatusType oldTrigger = trigger;
+						isCombo = true;
+						chase.setRepetitions(chase.getRepetitions() - 1);
+						List<StatusType> filter = filterStatus(chase.getHurtSkills());
+						// find the nearest ninja that will chase
+						int nearestIndex = findNearestNinja2Combo(availableSkills, filter);
+						if (nearestIndex != -1) {
+							trigger = filter.get(nearestIndex);
+						} else {
+							// No more combos
+							trigger = filter.get(0);
+							isCombo = false;
+						}
+						System.out.println(oldTrigger + " -> " + trigger + " : " + ninja.get(i).getChakraSkill());
+
+						// validate repetitions with zero
+						if (chase.getRepetitions() == 0) {
+							remove.add(i);
+						}
+						// is high combo?
+						if (chase.getHurtSkills().contains(StatusType.HIGH_COMBO)) {
+							isHighCombo = true;
+						}
+
+						break;
+					}
+				}
+				// remove all chases in zero
+				for (Integer integer : remove) {
+					ninja.remove(integer.intValue());
+				}
+				if (isCombo) {
+					break;
+				}
+			}
 
 		} while (!isEmptyList(availableSkills) && isCombo);
 
+		// TODO: add high combo check, for loop
+
+	}
+
+	private static int nearestCombo(ArrayList<Skill>[] availableSkills, StatusType status) {
+		int nearest = -1;
+
+		for (int i = 0; i < availableSkills.length; i++) {
+			for (int j = 0; j < availableSkills[i].size(); j++) {
+				if (availableSkills[i].get(j).getChaseSkills().contains(status)) {
+					return i;
+				}
+			}
+		}
+
+		return nearest;
+	}
+
+	private static int findNearestNinja2Combo(ArrayList<Skill>[] availableSkills, List<StatusType> filter) {
+		// min, index
+		int min = Integer.MAX_VALUE;
+		int index = Integer.MAX_VALUE;
+		boolean flag = false;
+		for (int i = 0; i < filter.size(); i++) {
+			StatusType statusType = filter.get(i);
+			int temp = nearestCombo(availableSkills, statusType);
+			if (temp < min && temp != -1) {
+				min = temp;
+				index = i;
+				flag = true;
+			}
+		}
+		if (flag) {
+			return index;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * @param chaseSkills
+	 * @return
+	 */
+	private static List<StatusType> filterStatus(List<StatusType> chaseSkills) {
+		List<StatusType> filter = new ArrayList<StatusType>();
+		for (StatusType statusType : chaseSkills) {
+			if (statusType == StatusType.LOW_FLOAT || statusType == StatusType.HIGH_FLOAT
+					|| statusType == StatusType.REPULSED || statusType == StatusType.KNOCKDOWN
+					|| statusType == StatusType.IMMOBILE || statusType == StatusType.SLEEP) {
+				filter.add(statusType);
+			}
+		}
+		return filter;
 	}
 
 	/**
