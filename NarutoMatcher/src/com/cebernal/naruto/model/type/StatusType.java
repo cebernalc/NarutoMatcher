@@ -31,7 +31,8 @@ public enum StatusType {
 		} else if (sStatus.equalsIgnoreCase("7 Combos") || sStatus.equalsIgnoreCase("High Combo")
 				|| sStatus.equalsIgnoreCase("-") || sStatus.equalsIgnoreCase("10 Combos")) {
 			return HIGH_COMBO;
-		} if (sStatus.equalsIgnoreCase("Immobile")) {
+		}
+		if (sStatus.equalsIgnoreCase("Immobile")) {
 			return IMMOBILE;
 		} else if (sStatus.equalsIgnoreCase("Sleep")) {
 			return SLEEP;
@@ -45,11 +46,10 @@ public enum StatusType {
 			return ACUPUNCTURE;
 		} else if (sStatus.equalsIgnoreCase("Interruption")) {
 			return INTERRUPTION;
-		}else if (sStatus.isEmpty()) {
+		} else {
+			// System.out.println("::::" + sChase + "::::");
 			return NONE;
 		}
-		// System.out.println("::::" + sChase + "::::");
-		return null;
 	}
 
 	public static List<StatusType> getTypes(String sStatus) {
@@ -57,7 +57,10 @@ public enum StatusType {
 
 		String[] split = sStatus.split("  ");
 		for (String chase : split) {
-			status.add(getType(chase.trim()));
+			StatusType type = getType(chase.trim());
+			if (type != NONE) {
+				status.add(type);
+			}
 		}
 		return status;
 	}

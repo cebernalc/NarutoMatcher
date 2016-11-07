@@ -37,7 +37,10 @@ public enum DebuffType {
 
 		String[] split = sDebuff.split("  ");
 		for (String chase : split) {
-			debuffs.add(getType(chase.trim()));
+			DebuffType type = getType(chase.trim());
+			if (type != NONE) {
+				debuffs.add(type);
+			}
 		}
 		return debuffs;
 	}

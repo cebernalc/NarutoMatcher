@@ -42,6 +42,7 @@ public class NinjaParser {
 	public static Ninja getNinja(JsonObject ninjaJson, HashMap<String, Skill> skills) {
 		Ninja ninja = new Ninja();
 		ninja.setName(ninjaJson.get("szName").getAsString());
+		ninja.setIdNinja(ninjaJson.get("iNid").getAsString());
 		ninja.setElement(ElementType.getType(ninjaJson.get("szAttr").getAsString()));
 
 		String mystery = ninjaJson.get("iOySkill").getAsString();

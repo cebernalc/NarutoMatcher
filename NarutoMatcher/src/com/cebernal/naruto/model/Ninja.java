@@ -6,8 +6,7 @@
  */
 package com.cebernal.naruto.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
 
 import com.cebernal.naruto.model.type.ElementType;
 
@@ -17,8 +16,9 @@ import com.cebernal.naruto.model.type.ElementType;
  * @author Carlos Bernal
  * @since Oct 8, 2016
  */
-public class Ninja {
+public class Ninja implements Comparable<Ninja> {
 
+	private String idNinja;
 	private String name;
 	private ElementType element;
 	private Skill mistery;
@@ -111,6 +111,24 @@ public class Ninja {
 
 	public void setSkill3(Skill skill3) {
 		this.skill3 = skill3;
+	}
+
+	public String getIdNinja() {
+		return idNinja;
+	}
+
+	public void setIdNinja(String idNinja) {
+		this.idNinja = idNinja;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Ninja o) {
+		return getName().compareTo(o.getName());
 	}
 
 }
