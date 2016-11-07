@@ -9,11 +9,14 @@ package com.cebernal.naruto.parser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
+import com.cebernal.naruto.model.type.SkillType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -29,15 +32,27 @@ import com.google.gson.JsonParser;
  */
 public class DatabaseParser {
 
+	private HashMap<String, Skill> skills = new HashMap<String, Skill>();
+	private HashMap<String, Skill> summons = new HashMap<String, Skill>();
+	private HashMap<String, Skill> mainSkills = new HashMap<String, Skill>();
+	private static DatabaseParser INSTANCE = null;
+
 	public static void main(String[] args) {
-		buildDatabase();
+		DatabaseParser.getInstance().buildDatabase();
 	}
 
-	public static void buildDatabase() {
+	private DatabaseParser() {
 
-		HashMap<String, Skill> skills = new HashMap<String, Skill>();
-		HashMap<String, Skill> summons = new HashMap<String, Skill>();
-		HashMap<String, Skill> mainSkills = new HashMap<String, Skill>();
+	}
+
+	public static DatabaseParser getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new DatabaseParser();
+		}
+		return INSTANCE;
+	}
+
+	public void buildDatabase() {
 
 		String fileName = "naruto_data/data.txt";
 		JsonObject database = fileToJSON(fileName).getAsJsonObject("data");
@@ -73,21 +88,32 @@ public class DatabaseParser {
 			Ninja ninjaPojo = NinjaParser.getNinja(ninja, skills);
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			String prettyJson = gson.toJson(ninjaPojo);
-			System.out.println(ninjaPojo);
-			System.out.println(prettyJson);
+			// System.out.println(ninjaPojo);
+			// System.out.println(prettyJson);
 			break;
 		}
 
-		System.out.println("--------");
-		for (Skill string : summons.values()) {
-			System.out.println(string.getNameCharacter());
+		for (Entry<String, Skill> string : skills.entrySet()) {
+			Skill skill = string.getValue();
+			if (skill.getSkillType() == SkillType.CHASE) {
+				System.out.println(skill.getIdSkill());
+				System.out.println(skill.getDescriptionSkill());
+				System.out.println(skill.getChaseSkills() + " : " + skill.getHurtSkills());
+				System.out.println(skill.getDebuffs());
+				System.out.println("-------------------------\n");
+			}
 		}
-		System.out.println("--------");
+		
+		// System.out.println("--------");
+		// for (Skill string : summons.values()) {
+		// System.out.println(string.getNameCharacter());
+		// }
+		// System.out.println("--------");
 		// System.out.println(prettyJson);
 
 	}
 
-	public static JsonObject fileToJSON(String fileName) {
+	private JsonObject fileToJSON(String fileName) {
 		JsonObject jsonObject = new JsonObject();
 		try {
 			JsonParser parser = new JsonParser();
