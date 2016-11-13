@@ -15,11 +15,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.Button?>
 
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-	prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="com.cebernal.naruto.HomeMatcherController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
@@ -43,7 +45,7 @@
 		</MenuBar>
 	</top>
 	<right>
-		<ScrollPane prefHeight="200.0" prefWidth="300.0"
+		<ScrollPane prefHeight="200.0" prefWidth="320.0"
 			BorderPane.alignment="CENTER" fx:id="scrollNinja">
 			<content>
 
@@ -51,20 +53,18 @@
 		</ScrollPane>
 	</right>
 	<center>
-		<TextArea prefHeight="200.0" prefWidth="150.0"
-			BorderPane.alignment="CENTER" />
+		<TextArea prefHeight="200.0" prefWidth="100.0"
+	BorderPane.alignment="CENTER" fx:id="outputArea" />
 	</center>
 	<left>
-		<VBox prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		<VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="230.0"
+			BorderPane.alignment="TOP_LEFT" spacing="10" translateY="20">
 			<children>
 				<Label text="Main Character" />
-				<ComboBox prefWidth="150.0" />
-				<Label text="Mistery" />
-				<Label text="Normal Attack" />
-				<Label text="Chase 1" />
-				<Label text="Chase 2" />
+				<ComboBox prefWidth="200.0" fx:id="mainCharacterCB" />
 				<Label text="Summon" />
-				<ComboBox prefWidth="150.0" />
+				<ComboBox prefWidth="200.0" fx:id="summonCB" />
+				<Button text="Give me my team!" translateY="40" onAction="#generateTeams"/>
 			</children>
 		</VBox>
 	</left>

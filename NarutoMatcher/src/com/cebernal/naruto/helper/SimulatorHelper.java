@@ -14,6 +14,7 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
+import com.cebernal.naruto.model.Solution;
 import com.cebernal.naruto.model.type.SkillType;
 import com.cebernal.naruto.model.type.StatusType;
 import com.google.gson.Gson;
@@ -203,5 +204,18 @@ public class SimulatorHelper {
 			isEmpty &= arrayList.isEmpty();
 		}
 		return isEmpty;
+	}
+
+	/**
+	 * @param main
+	 * @param summon
+	 * @param lockedNinjas
+	 * @param activeNinjas
+	 * @return
+	 */
+	public static List<Solution> generateTeams(Ninja main, Skill summon, List<String> lockedNinjas,
+			List<String> activeNinjas) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

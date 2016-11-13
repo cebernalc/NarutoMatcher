@@ -1,0 +1,18 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.check-box>.box {
+  -fx-background-insets: 0.0;
+  -fx-background-radius: 0.0;
+  -fx-background-color: transparent;
+}
+
+.check-box>.box>.mark {
+  -fx-background-image: url("resources/gui/lock_open_alt.png");
+  -fx-background-position: center -2.3px;
+  -fx-background-repeat: stretch;
+  -fx-shape: none;
+}
+
+.check-box:selected>.box>.mark{
+  -fx-background-color: transparent;
+  -fx-background-image: url("resources/gui/lock_alt.png");
+}

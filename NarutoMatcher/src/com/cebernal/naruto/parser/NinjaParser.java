@@ -43,6 +43,7 @@ public class NinjaParser {
 		Ninja ninja = new Ninja();
 		ninja.setName(ninjaJson.get("szName").getAsString());
 		ninja.setIdNinja(ninjaJson.get("iNid").getAsString());
+		ninja.setImage(ninjaJson.get("szPicUrl2").getAsString());
 		ninja.setElement(ElementType.getType(ninjaJson.get("szAttr").getAsString()));
 
 		String mystery = ninjaJson.get("iOySkill").getAsString();

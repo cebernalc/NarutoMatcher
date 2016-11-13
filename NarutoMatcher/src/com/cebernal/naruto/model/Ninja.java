@@ -6,9 +6,8 @@
  */
 package com.cebernal.naruto.model;
 
-import java.util.Comparator;
-
 import com.cebernal.naruto.model.type.ElementType;
+import com.sun.javafx.image.impl.ByteIndexed.Getter;
 
 /**
  * {Insert class description here}
@@ -27,6 +26,7 @@ public class Ninja implements Comparable<Ninja> {
 	private Skill skill2;
 	private Skill skill3;
 	private Skill summon = null;
+	private String image;
 
 	/**
 	 * @return the name
@@ -60,6 +60,10 @@ public class Ninja implements Comparable<Ninja> {
 
 	@Override
 	public String toString() {
+		return name + ": [" + getElement() + "]";
+	}
+
+	public String toJson() {
 		return "Ninja [name=" + name + ", element=" + element + ", mistery=" + mistery + ", standardAttack="
 				+ standardAttack + ", skill1=" + skill1 + ", skill2=" + skill2 + ", skill3=" + skill3 + ", summon="
 				+ summon + "]";
@@ -129,6 +133,14 @@ public class Ninja implements Comparable<Ninja> {
 	@Override
 	public int compareTo(Ninja o) {
 		return getName().compareTo(o.getName());
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }
