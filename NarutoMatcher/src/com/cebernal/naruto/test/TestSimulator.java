@@ -23,11 +23,12 @@ import com.cebernal.naruto.model.type.StatusType;
 public class TestSimulator {
 
 	public static void main(String[] args) {
-
+		long time = System.currentTimeMillis();
 		StatusType trigger = StatusType.KNOCKDOWN;
-		// SimulatorHelper.simulateTeam(getEasyTeam(), trigger);
-		// SimulatorHelper.simulateTeam(getPvpWindTeam(), trigger);
+		SimulatorHelper.simulateTeam(getEasyTeam(), trigger);
+		SimulatorHelper.simulateTeam(getPvpWindTeam(), trigger);
 		SimulatorHelper.simulateTeam(getComboWindTeam(), trigger);
+		System.out.println(((System.currentTimeMillis() - time)));
 
 	}
 

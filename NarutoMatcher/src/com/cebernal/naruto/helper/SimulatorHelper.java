@@ -8,6 +8,7 @@ package com.cebernal.naruto.helper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.jws.soap.SOAPBinding.Style;
@@ -17,9 +18,11 @@ import com.cebernal.naruto.model.Skill;
 import com.cebernal.naruto.model.Solution;
 import com.cebernal.naruto.model.type.SkillType;
 import com.cebernal.naruto.model.type.StatusType;
+import com.cebernal.naruto.parser.DatabaseParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javafx.scene.control.Alert;
 import javafx.util.Pair;
 
 /**
@@ -215,7 +218,50 @@ public class SimulatorHelper {
 	 */
 	public static List<Solution> generateTeams(Ninja main, Skill summon, List<String> lockedNinjas,
 			List<String> activeNinjas) {
-		// TODO Auto-generated method stub
+
+		List<Ninja> alreadyUsed = new ArrayList<Ninja>();
+		List<Ninja> generation = new ArrayList<Ninja>();
+
+		while (!activeNinjas.isEmpty()) {
+			generation.clear();
+			generation.add(main);
+			generation.addAll(getNinjas(lockedNinjas.toArray(new String[0])));
+			// It will
+			int count = 4 - generation.size();
+			for (int i = 0; i < count; i++) {
+				generation.addAll(getNinjas(activeNinjas.remove(0)));
+			}
+			
+			
+			
+			Ninja[] simulation = new Ninja[4];
+
+		}
+
 		return null;
+	}
+
+	/**
+	 * @param lockedNinjas
+	 * @return
+	 */
+	private static Collection<? extends Ninja> getNinjas(String... lockedNinjas) {
+		List<Ninja> ninjas = new ArrayList<Ninja>();
+		for (String ninja : lockedNinjas) {
+			ninjas.add(DatabaseParser.getInstance().getNinjas().get(ninja));
+		}
+		return ninjas;
+	}
+
+	/**
+	 * @param simulation
+	 * @return
+	 */
+	private static boolean allNull(Ninja[] simulation) {
+		boolean allNull = true;
+		for (Ninja ninja : simulation) {
+			allNull &= ninja == null;
+		}
+		return allNull;
 	}
 }
