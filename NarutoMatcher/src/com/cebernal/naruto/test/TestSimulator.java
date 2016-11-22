@@ -26,9 +26,12 @@ public class TestSimulator {
 		long time = System.currentTimeMillis();
 		StatusType trigger = StatusType.KNOCKDOWN;
 		SimulatorHelper.simulateTeam(getEasyTeam(), trigger);
+		System.out.println();
 		SimulatorHelper.simulateTeam(getPvpWindTeam(), trigger);
+		System.out.println();
 		SimulatorHelper.simulateTeam(getComboWindTeam(), trigger);
-		System.out.println(((System.currentTimeMillis() - time)));
+		System.out.println();
+		System.out.println("Milliseconds:"+((System.currentTimeMillis() - time)));
 
 	}
 

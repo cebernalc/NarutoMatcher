@@ -7,7 +7,6 @@
 package com.cebernal.naruto.model;
 
 import com.cebernal.naruto.model.type.ElementType;
-import com.sun.javafx.image.impl.ByteIndexed.Getter;
 
 /**
  * {Insert class description here}
@@ -27,6 +26,7 @@ public class Ninja implements Comparable<Ninja> {
 	private Skill skill3;
 	private Skill summon = null;
 	private String image;
+	private boolean isMain = false;
 
 	/**
 	 * @return the name
@@ -141,6 +141,14 @@ public class Ninja implements Comparable<Ninja> {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public boolean isMain() {
+		return isMain;
+	}
+
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
 	}
 
 }

@@ -7,11 +7,9 @@
 package com.cebernal.naruto.helper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-
-import javax.jws.soap.SOAPBinding.Style;
 
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
@@ -19,11 +17,7 @@ import com.cebernal.naruto.model.Solution;
 import com.cebernal.naruto.model.type.SkillType;
 import com.cebernal.naruto.model.type.StatusType;
 import com.cebernal.naruto.parser.DatabaseParser;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import javafx.scene.control.Alert;
-import javafx.util.Pair;
+import com.google.common.collect.Collections2;
 
 /**
  * {Insert class description here}
@@ -43,18 +37,20 @@ public class SimulatorHelper {
 	 *            Receives a formation of 4 ninjas
 	 * @param trigger
 	 */
-	public static void simulateTeam(Ninja[] team, StatusType trigger) {
+	public static Solution simulateTeam(Ninja[] team, StatusType trigger) {
 		// Ninja first = team[0];
 		// Ninja second = team[1];
 		// Ninja third = team[2];
 		// Ninja fourth = team[3];
-
 		ArrayList<Skill> availableSkills[] = new ArrayList[4];
+		int mainIndex = 0;
 		// Populate chases
 		for (int i = 0; i < team.length; i++) {
 			List<Skill> temp = new ArrayList<Skill>();
 			availableSkills[i] = new ArrayList<Skill>();
-
+			if (team[i].isMain()) {
+				mainIndex = i;
+			}
 			if (team[i].getSkill1().getSkillType() == SkillType.CHASE) {
 				Skill chase = new Skill();
 				chase.setChaseSkills(team[i].getSkill1().getChaseSkills());
@@ -63,7 +59,7 @@ public class SimulatorHelper {
 				chase.setChakraSkill(team[i].getName());
 				availableSkills[i].add(chase);
 			}
-			if (team[i].getSkill2().getSkillType() == SkillType.CHASE) {
+			if (team[i].getSkill2() != null && team[i].getSkill2().getSkillType() == SkillType.CHASE) {
 				Skill chase = new Skill();
 				chase.setChaseSkills(team[i].getSkill2().getChaseSkills());
 				chase.setHurtSkills(team[i].getSkill2().getHurtSkills());
@@ -71,7 +67,7 @@ public class SimulatorHelper {
 				chase.setChakraSkill(team[i].getName());
 				availableSkills[i].add(chase);
 			}
-			if (team[i].getSkill3().getSkillType() == SkillType.CHASE) {
+			if (team[i].getSkill3() != null && team[i].getSkill3().getSkillType() == SkillType.CHASE) {
 				Skill chase = new Skill();
 				chase.setChaseSkills(team[i].getSkill3().getChaseSkills());
 				chase.setHurtSkills(team[i].getSkill3().getHurtSkills());
@@ -84,7 +80,11 @@ public class SimulatorHelper {
 				chase.setChaseSkills(team[i].getSummon().getChaseSkills());
 				chase.setHurtSkills(team[i].getSummon().getHurtSkills());
 				chase.setRepetitions(team[i].getSummon().getRepetitions());
-				chase.setChakraSkill(team[i].getName());
+				String tempName = team[i].getName();
+				if (team[i].isMain()) {
+					tempName += " [Summon]";
+				}
+				chase.setChakraSkill(tempName);
 				availableSkills[i].add(chase);
 			}
 		}
@@ -95,10 +95,11 @@ public class SimulatorHelper {
 
 		boolean isCombo;
 		boolean isHighCombo = false;
-		System.out.println(trigger);
+		int combo = 1;
+		StringBuffer buffer = new StringBuffer(trigger + "\n");
+		// System.out.println(trigger);
 		do {
 			isCombo = false;
-			// TODO: finish the algorithm
 			for (ArrayList<Skill> ninja : availableSkills) {
 				ArrayList<Integer> remove = new ArrayList<Integer>();
 				for (int i = 0; i < ninja.size(); i++) {
@@ -107,7 +108,7 @@ public class SimulatorHelper {
 						StatusType oldTrigger = trigger;
 						isCombo = true;
 						chase.setRepetitions(chase.getRepetitions() - 1);
-						List<StatusType> filter = filterStatus(chase.getHurtSkills());
+						List<StatusType> filter = NinjaHelper.filterStatus(chase.getHurtSkills());
 						// find the nearest ninja that will chase
 						int nearestIndex = findNearestNinja2Combo(availableSkills, filter);
 						if (nearestIndex != -1) {
@@ -117,8 +118,9 @@ public class SimulatorHelper {
 							trigger = filter.get(0);
 							isCombo = false;
 						}
-						System.out.println(oldTrigger + " -> " + trigger + " : " + ninja.get(i).getChakraSkill());
-
+						// System.out.println(oldTrigger + " -> " + trigger + "
+						// : " + ninja.get(i).getChakraSkill());
+						buffer.append(oldTrigger + " -> " + trigger + " : " + ninja.get(i).getChakraSkill() + "\n");
 						// validate repetitions with zero
 						if (chase.getRepetitions() == 0) {
 							remove.add(i);
@@ -139,11 +141,20 @@ public class SimulatorHelper {
 					break;
 				}
 			}
-
+			combo++;
 		} while (!isEmptyList(availableSkills) && isCombo);
-
+		// System.out.println("Combo: " + combo);
 		// TODO: add high combo check, for loop
-
+		Solution solution = new Solution();
+		solution.setNinja1(team[0].getIdNinja());
+		solution.setNinja2(team[1].getIdNinja());
+		solution.setNinja3(team[2].getIdNinja());
+		solution.setNinja4(team[3].getIdNinja());
+		solution.setMaxCombo(combo);
+		solution.setSummon(team[mainIndex].getSummon().getIdSkill());
+		solution.setChase(team[mainIndex].getSkill1().getIdSkill());
+		solution.setComboString(buffer.toString());
+		return solution;
 	}
 
 	private static int nearestCombo(ArrayList<Skill>[] availableSkills, StatusType status) {
@@ -182,22 +193,6 @@ public class SimulatorHelper {
 	}
 
 	/**
-	 * @param chaseSkills
-	 * @return
-	 */
-	private static List<StatusType> filterStatus(List<StatusType> chaseSkills) {
-		List<StatusType> filter = new ArrayList<StatusType>();
-		for (StatusType statusType : chaseSkills) {
-			if (statusType == StatusType.LOW_FLOAT || statusType == StatusType.HIGH_FLOAT
-					|| statusType == StatusType.REPULSED || statusType == StatusType.KNOCKDOWN
-					|| statusType == StatusType.IMMOBILE || statusType == StatusType.SLEEP) {
-				filter.add(statusType);
-			}
-		}
-		return filter;
-	}
-
-	/**
 	 * @param availableSkills
 	 * @return
 	 */
@@ -214,54 +209,145 @@ public class SimulatorHelper {
 	 * @param summon
 	 * @param lockedNinjas
 	 * @param activeNinjas
+	 * @param targetCombo
 	 * @return
 	 */
 	public static List<Solution> generateTeams(Ninja main, Skill summon, List<String> lockedNinjas,
-			List<String> activeNinjas) {
+			List<String> activeNinjas, int targetCombo) {
 
-		List<Ninja> alreadyUsed = new ArrayList<Ninja>();
-		List<Ninja> generation = new ArrayList<Ninja>();
+		List<Solution> solutions = new ArrayList<Solution>();
+		List<Skill> summons = new ArrayList<Skill>();
+		List<List<String>> combinations = null;
+		List<List<String>> allCombinations = new ArrayList<>();
 
-		while (!activeNinjas.isEmpty()) {
-			generation.clear();
-			generation.add(main);
-			generation.addAll(getNinjas(lockedNinjas.toArray(new String[0])));
-			// It will
-			int count = 4 - generation.size();
-			for (int i = 0; i < count; i++) {
-				generation.addAll(getNinjas(activeNinjas.remove(0)));
+		int count = 3 - lockedNinjas.size();
+		combinations = generateGroup(activeNinjas, count);
+		for (List<String> list : combinations) {
+			// Add locked ninja and main
+			list.add(main.getIdNinja());
+			for (String lockedNinjaId : lockedNinjas) {
+				list.add(lockedNinjaId);
 			}
-			
-			
-			
-			Ninja[] simulation = new Ninja[4];
-
+			// System.out.println(list);
+			// System.out.println("-------");
+			List<List<String>> generateCombinations = generatePermutations(list, 4);
+			allCombinations.addAll(generateCombinations);
+			// for (List<String> simulation : generateCombinations) {
+			//
+			// System.out.println(simulation);
+			// }
+			// System.out.println("-------");
 		}
 
-		return null;
+		// Add all yellow summons
+		if (summon.getNameCharacter().contains("all")) {
+			for (Skill summonDb : DatabaseParser.getInstance().getSummons().values()) {
+				if (summonDb.getRepetitions() > 1) {
+					summons.add(summonDb);
+				}
+			}
+		} else {
+			summons.add(summon);
+		}
+		//
+		ArrayList<StatusType> attacksMain = new ArrayList<StatusType>(NinjaHelper.getAttacksMain(main));
+		List<Skill> chassesMain = NinjaHelper.getChassesMain(main);
+		// Iterate through all summons
+		for (Skill summonIterator : summons) {
+			for (List<String> teamToSimulate : allCombinations) {
+				List<Ninja> ninjas = NinjaHelper.getNinjas(teamToSimulate.toArray(new String[0]));
+				List<StatusType> attacksTeam = NinjaHelper.getAttacksTeam(ninjas, attacksMain);
+				// Each standard attack of the team
+				for (StatusType statusType : attacksTeam) {
+					// Each chase of the main ninja
+					for (Skill chaseMain : chassesMain) {
+						// Identify main ninja
+						for (Ninja ninja : ninjas) {
+							if (ninja.getIdNinja().equals(main.getIdNinja())) {
+								main.setSummon(summonIterator);
+								main.setSkill1(chaseMain);
+								main.setSkill2(new Skill());
+								main.setSkill3(new Skill());
+							}
+						}
+
+						// Simulate!
+						// simulationTeam[0] = teamToSimulate.get(0);
+						// simulationTeam[1] = teamToSimulate.get(1);
+						// simulationTeam[2] = teamToSimulate.get(2);
+						// simulationTeam[3] = teamToSimulate.get(3);
+						Solution solution = simulateTeam(ninjas.toArray(new Ninja[0]), statusType);
+						if (solution.getMaxCombo() >= targetCombo) {
+							solutions.add(solution);
+						}
+					}
+				}
+			}
+		}
+
+		return solutions;
 	}
 
 	/**
-	 * @param lockedNinjas
+	 * @param list
+	 * @param i
 	 * @return
 	 */
-	private static Collection<? extends Ninja> getNinjas(String... lockedNinjas) {
-		List<Ninja> ninjas = new ArrayList<Ninja>();
-		for (String ninja : lockedNinjas) {
-			ninjas.add(DatabaseParser.getInstance().getNinjas().get(ninja));
+	private static List<List<String>> generatePermutations(List<String> list, int i) {
+		List<List<String>> permutation = new ArrayList<>();
+		Collection<List<String>> result = Collections2.orderedPermutations(list);
+		for (List<String> team : result) {
+			permutation.add(team);
 		}
-		return ninjas;
+		return permutation;
+	}
+
+	private static List<List<String>> generateGroup(List<String> activeNinjas, int howMany) {
+		List<List<String>> combinations = new ArrayList<>();
+		choose(activeNinjas, howMany, new ArrayList<String>(), 0, combinations, false);
+		return combinations;
 	}
 
 	/**
-	 * @param simulation
-	 * @return
+	 * n choose k
+	 * 
+	 * @param activeNinjas
+	 * @param howMany
+	 * @param stringBuffer
+	 * @param i
+	 * @param combination
 	 */
-	private static boolean allNull(Ninja[] simulation) {
-		boolean allNull = true;
-		for (Ninja ninja : simulation) {
-			allNull &= ninja == null;
+	private static void choose(List<String> data, int k, List<String> result, int startIndex,
+			List<List<String>> combination, boolean distinct) {
+		if (result.size() == k) {
+			// System.out.println(result.toString());
+			HashSet<String> subList = new HashSet<String>();
+			for (String ninja : result) {
+				subList.add(ninja);
+			}
+			if (distinct || (!containsHash(combination, subList) && !distinct)) {
+				combination.add(new ArrayList<String>(subList));
+			}
+			// result.clear();
+			return;
 		}
-		return allNull;
+
+		for (int i = startIndex; i < data.size(); i++) {
+			result.add(data.get(i));
+			choose(data, k, result, i + 1, combination, distinct);
+			result.remove(result.size() - 1);
+		}
 	}
+
+	private static boolean containsHash(List<List<String>> combination, HashSet<String> subList) {
+		boolean contains = false;
+		for (List<String> string : combination) {
+			if (new HashSet<>(string).hashCode() == subList.hashCode()) {
+				contains = true;
+				break;
+			}
+		}
+		return contains;
+	}
+
 }

@@ -163,7 +163,7 @@ public class Skill {
 	@Override
 	public String toString() {
 		String temp = "";
-		if (getHurtSkills().get(0) != StatusType.NONE) {
+		if (!getHurtSkills().isEmpty() && getHurtSkills().get(0) != StatusType.NONE) {
 			temp = ": " + getChaseSkills() + " -> " + getHurtSkills() + " x" + getRepetitions();
 		}
 		return nameCharacter + temp;

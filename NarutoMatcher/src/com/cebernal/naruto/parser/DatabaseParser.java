@@ -91,7 +91,7 @@ public class DatabaseParser {
 					}
 				} else if (skill.getCharacterSkill().equalsIgnoreCase(NinjaParser.SUMMON)) {
 					getSummons().put(idSkill, skill);
-//					System.out.println(skill.toJson());
+					// System.out.println(skill.toJson());
 				}
 			}
 			// count++;
@@ -102,6 +102,7 @@ public class DatabaseParser {
 			// Parsing ninja
 			Ninja ninjaPojo = NinjaParser.getNinja(ninja, getSkills());
 			if (mainNames.contains(ninjaPojo.getName())) {
+				ninjaPojo.setMain(true);
 				mains.add(ninjaPojo.getIdNinja());
 			}
 			ninjas.put(ninjaPojo.getIdNinja(), ninjaPojo);

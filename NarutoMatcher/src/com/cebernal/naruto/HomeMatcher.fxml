@@ -64,6 +64,8 @@
 				<ComboBox prefWidth="200.0" fx:id="mainCharacterCB" />
 				<Label text="Summon" />
 				<ComboBox prefWidth="200.0" fx:id="summonCB" />
+				<Label text="Target Combo" />
+				<ComboBox prefWidth="200.0" fx:id="minimumComboCB" />
 				<Button text="Give me my team!" translateY="40" onAction="#generateTeams"/>
 			</children>
 		</VBox>
