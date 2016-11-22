@@ -53,15 +53,6 @@ public class DatabaseParser {
 
 	public void buildDatabase() {
 
-	public static DatabaseParser getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new DatabaseParser();
-		}
-		return INSTANCE;
-	}
-
-	public void buildDatabase() {
-
 		String fileName = "naruto_data/data.txt";
 		JsonObject database = fileToJSON(fileName).getAsJsonObject("data");
 
