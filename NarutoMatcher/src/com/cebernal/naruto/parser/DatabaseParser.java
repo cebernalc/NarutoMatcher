@@ -9,8 +9,10 @@ package com.cebernal.naruto.parser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
@@ -41,6 +43,15 @@ public class DatabaseParser {
 	private DatabaseParser() {
 		buildDatabase();
 	}
+
+	public static DatabaseParser getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new DatabaseParser();
+		}
+		return INSTANCE;
+	}
+
+	public void buildDatabase() {
 
 	public static DatabaseParser getInstance() {
 		if (INSTANCE == null) {
