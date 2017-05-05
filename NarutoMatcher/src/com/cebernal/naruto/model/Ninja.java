@@ -6,6 +6,9 @@
  */
 package com.cebernal.naruto.model;
 
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import com.cebernal.naruto.model.type.ElementType;
 
 /**
@@ -21,9 +24,7 @@ public class Ninja implements Comparable<Ninja> {
 	private ElementType element;
 	private Skill mistery;
 	private Skill standardAttack;
-	private Skill skill1;
-	private Skill skill2;
-	private Skill skill3;
+	private SortedMap<Integer, Skill> skills = new TreeMap<Integer, Skill>();
 	private Skill summon = null;
 	private String image;
 	private boolean isMain = false;
@@ -65,8 +66,7 @@ public class Ninja implements Comparable<Ninja> {
 
 	public String toJson() {
 		return "Ninja [name=" + name + ", element=" + element + ", mistery=" + mistery + ", standardAttack="
-				+ standardAttack + ", skill1=" + skill1 + ", skill2=" + skill2 + ", skill3=" + skill3 + ", summon="
-				+ summon + "]";
+				+ standardAttack + ", skills=" + getSkills().toString() + ", summon=" + summon + "]";
 	}
 
 	public Skill getSummon() {
@@ -91,30 +91,6 @@ public class Ninja implements Comparable<Ninja> {
 
 	public void setStandardAttack(Skill standardAttack) {
 		this.standardAttack = standardAttack;
-	}
-
-	public Skill getSkill1() {
-		return skill1;
-	}
-
-	public void setSkill1(Skill skill1) {
-		this.skill1 = skill1;
-	}
-
-	public Skill getSkill2() {
-		return skill2;
-	}
-
-	public void setSkill2(Skill skill2) {
-		this.skill2 = skill2;
-	}
-
-	public Skill getSkill3() {
-		return skill3;
-	}
-
-	public void setSkill3(Skill skill3) {
-		this.skill3 = skill3;
 	}
 
 	public String getIdNinja() {
@@ -149,6 +125,14 @@ public class Ninja implements Comparable<Ninja> {
 
 	public void setMain(boolean isMain) {
 		this.isMain = isMain;
+	}
+
+	public SortedMap<Integer, Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(SortedMap<Integer, Skill> skills) {
+		this.skills = skills;
 	}
 
 }

@@ -24,7 +24,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -37,9 +36,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 public class HomeMatcherController implements Initializable {
 
@@ -269,7 +266,6 @@ public class HomeMatcherController implements Initializable {
 			CheckBox active = (CheckBox) hBox.getChildren().get(0);
 			CheckBox lock = (CheckBox) hBox.getChildren().get(1);
 			Ninja ninja = DatabaseParser.getInstance().getNinjas().get(stackPane.getId());
-			int count = 0;
 			// If ninja is blocked it is not added to active
 			if (lock.isSelected()) {
 				outputArea.appendText(ninja.getName() + " locked\n");

@@ -54,9 +54,9 @@ public class NinjaParser {
 
 		ninja.setMistery(skills.get(mystery));
 		ninja.setStandardAttack(skills.get(standard));
-		ninja.setSkill1(skills.get(skill1));
-		ninja.setSkill2(skills.get(skill2));
-		ninja.setSkill3(skills.get(skill3));
+		ninja.getSkills().put(0,skills.get(skill1));
+		ninja.getSkills().put(1,skills.get(skill2));
+		ninja.getSkills().put(2,skills.get(skill3));
 
 		return ninja;
 	}

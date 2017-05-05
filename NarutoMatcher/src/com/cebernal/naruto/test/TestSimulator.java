@@ -11,6 +11,7 @@ import java.util.Arrays;
 import com.cebernal.naruto.helper.SimulatorHelper;
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
+import com.cebernal.naruto.model.Solution;
 import com.cebernal.naruto.model.type.SkillType;
 import com.cebernal.naruto.model.type.StatusType;
 
@@ -25,13 +26,13 @@ public class TestSimulator {
 	public static void main(String[] args) {
 		long time = System.currentTimeMillis();
 		StatusType trigger = StatusType.KNOCKDOWN;
-		SimulatorHelper.simulateTeam(getEasyTeam(), trigger);
-		System.out.println();
-		SimulatorHelper.simulateTeam(getPvpWindTeam(), trigger);
-		System.out.println();
-		SimulatorHelper.simulateTeam(getComboWindTeam(), trigger);
-		System.out.println();
-		System.out.println("Milliseconds:"+((System.currentTimeMillis() - time)));
+		Solution solution = SimulatorHelper.simulateTeam(getEasyTeam(), trigger);
+		System.out.println(solution);
+		solution = SimulatorHelper.simulateTeam(getPvpWindTeam(), trigger);
+		System.out.println(solution);
+		solution = SimulatorHelper.simulateTeam(getComboWindTeam(), trigger);
+		System.out.println(solution);
+		System.out.println("Milliseconds:" + ((System.currentTimeMillis() - time)));
 
 	}
 
@@ -59,11 +60,12 @@ public class TestSimulator {
 
 		breezeDancer.setMistery(mistery);
 		breezeDancer.setStandardAttack(standardAttack);
-		breezeDancer.setSkill1(skill1);
-		breezeDancer.setSkill2(skill2);
-		breezeDancer.setSkill3(skill3);
+		breezeDancer.getSkills().put(0, skill1);
+		breezeDancer.getSkills().put(1, skill2);
+		breezeDancer.getSkills().put(2, skill3);
 		breezeDancer.setSummon(summon);
 		breezeDancer.setName("Breeze Dancer");
+		breezeDancer.setMain(true);
 
 		// Naruto
 		Ninja naruto = new Ninja();
@@ -80,9 +82,9 @@ public class TestSimulator {
 
 		naruto.setMistery(mistery);
 		naruto.setStandardAttack(standardAttack);
-		naruto.setSkill1(skill1);
-		naruto.setSkill2(skill2);
-		naruto.setSkill3(skill3);
+		naruto.getSkills().put(0, skill1);
+		naruto.getSkills().put(1, skill2);
+		naruto.getSkills().put(2, skill3);
 		naruto.setName("Naruto");
 
 		// Gaara
@@ -104,9 +106,9 @@ public class TestSimulator {
 
 		gaara.setMistery(mistery);
 		gaara.setStandardAttack(standardAttack);
-		gaara.setSkill1(skill1);
-		gaara.setSkill2(skill2);
-		gaara.setSkill3(skill3);
+		gaara.getSkills().put(0, skill1);
+		gaara.getSkills().put(1, skill2);
+		gaara.getSkills().put(2, skill3);
 		gaara.setName("Gaara");
 
 		// Kankuro
@@ -123,9 +125,9 @@ public class TestSimulator {
 
 		kankuro.setMistery(mistery);
 		kankuro.setStandardAttack(standardAttack);
-		kankuro.setSkill1(skill1);
-		kankuro.setSkill2(skill2);
-		kankuro.setSkill3(skill3);
+		kankuro.getSkills().put(0, skill1);
+		kankuro.getSkills().put(1, skill2);
+		kankuro.getSkills().put(2, skill3);
 		kankuro.setName("Kankuro");
 
 		Ninja[] team = { gaara, naruto, breezeDancer, kankuro };
@@ -162,11 +164,12 @@ public class TestSimulator {
 
 		breezeDancer.setMistery(mistery);
 		breezeDancer.setStandardAttack(standardAttack);
-		breezeDancer.setSkill1(skill1);
-		breezeDancer.setSkill2(skill2);
-		breezeDancer.setSkill3(skill3);
+		breezeDancer.getSkills().put(0, skill1);
+		breezeDancer.getSkills().put(1, skill2);
+		breezeDancer.getSkills().put(2, skill3);
 		breezeDancer.setSummon(summon);
 		breezeDancer.setName("Breeze Dancer");
+		breezeDancer.setMain(true);
 
 		// Hinata
 		Ninja hinata = new Ninja();
@@ -188,9 +191,9 @@ public class TestSimulator {
 
 		hinata.setMistery(mistery);
 		hinata.setStandardAttack(standardAttack);
-		hinata.setSkill1(skill1);
-		hinata.setSkill2(skill2);
-		hinata.setSkill3(skill3);
+		hinata.getSkills().put(0, skill1);
+		hinata.getSkills().put(1, skill2);
+		hinata.getSkills().put(2, skill3);
 		hinata.setName("Hinata");
 
 		// Karin
@@ -213,9 +216,9 @@ public class TestSimulator {
 
 		karin.setMistery(mistery);
 		karin.setStandardAttack(standardAttack);
-		karin.setSkill1(skill1);
-		karin.setSkill2(skill2);
-		karin.setSkill3(skill3);
+		karin.getSkills().put(0, skill1);
+		karin.getSkills().put(1, skill2);
+		karin.getSkills().put(2, skill3);
 		karin.setName("Karin");
 
 		// kurenai
@@ -233,9 +236,9 @@ public class TestSimulator {
 
 		kurenai.setMistery(mistery);
 		kurenai.setStandardAttack(standardAttack);
-		kurenai.setSkill1(skill1);
-		kurenai.setSkill2(skill2);
-		kurenai.setSkill3(skill3);
+		kurenai.getSkills().put(0, skill1);
+		kurenai.getSkills().put(1, skill2);
+		kurenai.getSkills().put(2, skill3);
 		kurenai.setName("Kurenai");
 
 		Ninja[] team = { breezeDancer, hinata, karin, kurenai };
@@ -267,11 +270,12 @@ public class TestSimulator {
 
 		fire.setMistery(mistery);
 		fire.setStandardAttack(standardAttack);
-		fire.setSkill1(skill1);
-		fire.setSkill2(skill2);
-		fire.setSkill3(skill3);
+		fire.getSkills().put(0, skill1);
+		fire.getSkills().put(1, skill2);
+		fire.getSkills().put(2, skill3);
 		fire.setSummon(summon);
 		fire.setName("Fire main");
+		fire.setMain(true);
 
 		// Ningendo
 		Ninja ningendo = new Ninja();
@@ -291,9 +295,9 @@ public class TestSimulator {
 
 		ningendo.setMistery(mistery);
 		ningendo.setStandardAttack(standardAttack);
-		ningendo.setSkill1(skill1);
-		ningendo.setSkill2(skill2);
-		ningendo.setSkill3(skill3);
+		ningendo.getSkills().put(0, skill1);
+		ningendo.getSkills().put(1, skill2);
+		ningendo.getSkills().put(2, skill3);
 		ningendo.setName("Ningendo");
 
 		// Tendo
@@ -318,9 +322,9 @@ public class TestSimulator {
 
 		tendo.setMistery(mistery);
 		tendo.setStandardAttack(standardAttack);
-		tendo.setSkill1(skill1);
-		tendo.setSkill2(skill2);
-		tendo.setSkill3(skill3);
+		tendo.getSkills().put(0, skill1);
+		tendo.getSkills().put(1, skill2);
+		tendo.getSkills().put(2, skill3);
 		tendo.setName("Tendo");
 
 		// Chiyo
@@ -343,9 +347,9 @@ public class TestSimulator {
 
 		chiyo.setMistery(mistery);
 		chiyo.setStandardAttack(standardAttack);
-		chiyo.setSkill1(skill1);
-		chiyo.setSkill2(skill2);
-		chiyo.setSkill3(skill3);
+		chiyo.getSkills().put(0, skill1);
+		chiyo.getSkills().put(1, skill2);
+		chiyo.getSkills().put(2, skill3);
 		chiyo.setName("Chiyo ten puppets");
 
 		Ninja[] team = { ningendo, tendo, chiyo, fire };

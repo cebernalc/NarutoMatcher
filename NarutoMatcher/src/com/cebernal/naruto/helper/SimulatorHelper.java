@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 
 import com.cebernal.naruto.model.Ninja;
 import com.cebernal.naruto.model.Skill;
@@ -51,30 +53,21 @@ public class SimulatorHelper {
 			if (team[i].isMain()) {
 				mainIndex = i;
 			}
-			if (team[i].getSkill1().getSkillType() == SkillType.CHASE) {
-				Skill chase = new Skill();
-				chase.setChaseSkills(team[i].getSkill1().getChaseSkills());
-				chase.setHurtSkills(team[i].getSkill1().getHurtSkills());
-				chase.setRepetitions(team[i].getSkill1().getRepetitions());
-				chase.setChakraSkill(team[i].getName());
-				availableSkills[i].add(chase);
+			// Extract all the chases from all the ninjas
+			SortedMap<Integer, Skill> skills = team[i].getSkills();
+			// For all 3 skills
+			for (Entry<Integer, Skill> entry : skills.entrySet()) {
+				Skill skill = entry.getValue();
+				if (skill != null && skill.getSkillType() == SkillType.CHASE) {
+					Skill chase = new Skill();
+					chase.setChaseSkills(skill.getChaseSkills());
+					chase.setHurtSkills(skill.getHurtSkills());
+					chase.setRepetitions(skill.getRepetitions());
+					chase.setChakraSkill(team[i].getName());
+					availableSkills[i].add(chase);
+				}
 			}
-			if (team[i].getSkill2() != null && team[i].getSkill2().getSkillType() == SkillType.CHASE) {
-				Skill chase = new Skill();
-				chase.setChaseSkills(team[i].getSkill2().getChaseSkills());
-				chase.setHurtSkills(team[i].getSkill2().getHurtSkills());
-				chase.setRepetitions(team[i].getSkill2().getRepetitions());
-				chase.setChakraSkill(team[i].getName());
-				availableSkills[i].add(chase);
-			}
-			if (team[i].getSkill3() != null && team[i].getSkill3().getSkillType() == SkillType.CHASE) {
-				Skill chase = new Skill();
-				chase.setChaseSkills(team[i].getSkill3().getChaseSkills());
-				chase.setHurtSkills(team[i].getSkill3().getHurtSkills());
-				chase.setRepetitions(team[i].getSkill3().getRepetitions());
-				chase.setChakraSkill(team[i].getName());
-				availableSkills[i].add(chase);
-			}
+
 			if (team[i].getSummon() != null) {
 				Skill chase = new Skill();
 				chase.setChaseSkills(team[i].getSummon().getChaseSkills());
@@ -152,7 +145,7 @@ public class SimulatorHelper {
 		solution.setNinja4(team[3].getIdNinja());
 		solution.setMaxCombo(combo);
 		solution.setSummon(team[mainIndex].getSummon().getIdSkill());
-		solution.setChase(team[mainIndex].getSkill1().getIdSkill());
+		solution.setChase(team[mainIndex].getSkills().get(0).getIdSkill());
 		solution.setComboString(buffer.toString());
 		return solution;
 	}
@@ -265,9 +258,9 @@ public class SimulatorHelper {
 						for (Ninja ninja : ninjas) {
 							if (ninja.getIdNinja().equals(main.getIdNinja())) {
 								main.setSummon(summonIterator);
-								main.setSkill1(chaseMain);
-								main.setSkill2(new Skill());
-								main.setSkill3(new Skill());
+								main.getSkills().put(0,chaseMain);
+								main.getSkills().put(1,new Skill());
+								main.getSkills().put(2,new Skill());
 							}
 						}
 
